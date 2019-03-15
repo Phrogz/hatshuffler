@@ -29,4 +29,8 @@ Object.defineProperties(Array.prototype, {
         };
         return result;
     }},
+
+    sample : {value:function() {
+        return this[(this.length*Math.random())<<0];
+    }},
 });

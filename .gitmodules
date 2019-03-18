@@ -1,0 +1,3 @@
+[submodule "simulated-annealing"]
+	path = simulated-annealing
+	url = git@github.com:Phrogz/simulated-annealing.git

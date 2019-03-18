@@ -1,16 +1,32 @@
+require('./utils');
+
+class Player {
+	constructor(obj) {
+		if (obj) Object.assign(this, obj);
+	}
+	toString() { return this.name + (this.tall ? '(T)' : '') }
+}
+
 class Team {
-	constructor(men=[], women=[]) { this.men=[...men]; this.women=[...women] }
+	constructor(men=[], women=[]) {
+		this.men=[...men];
+		this.women=[...women];
+	}
 	duplicate() { return new Team(this.men, this.women) }
 	get players(){ return [...this.men, ...this.women] }
 	each(ƒ) { this.players.forEach(ƒ) }
 	map(ƒ)  { return this.players.map(ƒ) }
+	toString() { return this.players.join(', ') }
+	includes(player) { return (player.male ? this.men : this.women).includes(player) }
 }
 
 class Round {
-	constructor(teams=[]) { this.teams=teams.map(t=>t.duplicate()) }
+	constructor(teams=[]) { this.teams = teams.map(t=>t.duplicate()) }
 	each(ƒ) { this.teams.forEach(ƒ) }
 	map(ƒ)  { return this.teams.map(ƒ) }
+	teamForPlayer(player) { return this.teams.find(t => t.includes(player)) }
 	duplicate() { return new Round(this.teams) }
+	toString() { return this.teams.map(t=>t+'').join('\n') }
 }
 
 const combinationsByArraySize = {
@@ -28,7 +44,7 @@ class Season {
 	each(ƒ) { this.rounds.forEach(ƒ) }
 	map(ƒ)  { return this.rounds.map(ƒ) }
 	duplicate() { return new Season(this.rounds) }
-	variation() {
+	swizzle() {
 		const round = this.rounds.sample();
 		// Pick a random pair of unique indices
 		const teamIndices = combinationsByArraySize[round.teams.length].sample();
@@ -41,7 +57,8 @@ class Season {
 		[t1[sex][t1i], t2[sex][t2i]] = [t2[sex][t2i], t1[sex][t1i]];
 		return this;
 	}
-	toString() { return this.rounds.map((r,i)=>`Round #${i}\n${r.teams.map(t=>t.players.map(p=>p.name).join(', ')).join('\n')}\n`).join('\n')}
+	get players() { return this.rounds[0].teams.flatMap(t=>t.players) }
+	toString() { return this.rounds.map((r,i)=>`Round #${i}\n${r+''}\n`).join('\n')}
 }
 
 // Require a file, reloading it from disk each time
@@ -65,13 +82,12 @@ function splitIntoTeams(players, teams=4) {
 	return men.map((mens,i)=>new Team(mens, women[i]));
 }
 
-function make(n, ƒ) {
-	return Array.from({length:n}, ƒ);
-}
-
-module.exports = function() {
+function defaultSeason() {
 	const config = rerequire('./config');
-	const teams = splitIntoTeams(config.players, config.teams);
+	const players = config.players.map(p => new Player(p));
+	const teams = splitIntoTeams(players, config.teams);
 	const rounds = Array.from({length:config.rounds}, ()=>new Round(teams));
 	return new Season(rounds);
 };
+
+module.exports = defaultSeason;

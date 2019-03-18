@@ -1,3 +1,4 @@
 module.exports = function(season) {
-    return season.variation();
+    season.swizzle();
+    return season;
 }

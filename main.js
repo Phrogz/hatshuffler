@@ -13,7 +13,7 @@ const parameters = {
 	cloneState: initialSeason.duplicate,
 	occasionallyInvoke: checkin,
 	invokeEvery: config.checkinEvery || 1e5,
-	maxIterations: 3e7
+	maxIterations: 1e6
 };
 let rankingWeights = require('./rankings/weights');
 
@@ -49,15 +49,10 @@ function weightedRankings(state) {
 }
 
 function newTemp(prevTemp, tempMin, tempMax, iterations) {
-	return (Math.sin(iterations/1e4)+1)/2 * (tempMax-tempMin) + tempMin;
+	return (Math.sin(iterations/5e3)+1)/2 * (tempMax-tempMin) + tempMin;
 }
 
 reset();
-
-
-// const readline = require('readline');
-// readline.emitKeypressEvents(process.stdin);
-// process.stdin.setRawMode(true);
 
 let currentState = parameters.initialState,
     currentScore  = weightedRankings(currentState);;

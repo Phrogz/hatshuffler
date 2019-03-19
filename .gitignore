@@ -1,3 +1,6 @@
+data/*.csv
+data/*.ods
+
 # Logs
 logs
 *.log

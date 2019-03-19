@@ -1,27 +1,22 @@
-require('./utils');
+const {rerequire} = require('./utils');
 const readline = require('readline-sync');
 const rankings = loadRankings();
 const setup = require('./setup');
 const anneal = require('./simulated-annealing');
 const initialSeason = setup();
-const config = require('./config');
+let config = require('./config');
 const checkin = require('./checkin');
 const parameters = {
 	newState: require('./variation'),
 	getScore: weightedRankings,
-	getTemp: newTemp,
+	getTemp: sineWaveTemp,
 	cloneState: initialSeason.duplicate,
 	occasionallyInvoke: checkin,
-	invokeEvery: config.checkinEvery || 1e5,
-	maxIterations: 1e6
 };
 let rankingWeights = require('./rankings/weights');
 
 function reset() {
 	parameters.initialState = setup();
-	parameters.tempMax = 4;
-	parameters.tempMin = 0;
-	rankingWeights = require('./rankings/weights');
 }
 
 function loadRankings() {
@@ -48,20 +43,20 @@ function weightedRankings(state) {
 	return result;
 }
 
-function newTemp(prevTemp, tempMin, tempMax, iterations) {
-	return (Math.sin(iterations/5e3)+1)/2 * (tempMax-tempMin) + tempMin;
+function sineWaveTemp(prevTemp, iterations) {
+	return (Math.cos(Math.PI*2*iterations/(config.resetEvery||1e3))+1)/2 * (config.maxTemp||10);
 }
 
 reset();
 
 let currentState = parameters.initialState,
-    currentScore  = weightedRankings(currentState);;
+    currentScore = weightedRankings(currentState);
 checkin(currentState, currentScore);
 
 while (true) {
 	const response = readline.question("(g)o (s)how (r)eset (e)dit e(x)it: ");
 
-	if (/^x/i.test(response)) {
+	if (/^[xq]/i.test(response)) {
 		console.log(currentState+'');
 		process.exit();
 
@@ -69,15 +64,15 @@ while (true) {
 		console.log(currentState+'');
 
 	} else if (/^g/i.test(response)) {
-		parameters.initialState = currentState;
-		let {state:newState, score:newScore} = anneal(parameters);
-		if (newState!==currentState) {
-			currentState = newState;
-			currentScore = newScore;
-			checkin(currentState, currentScore);
-		} else {
-			console.log('no better state found')
-		}
+		rankingWeights = rerequire('./rankings/weights')
+		config = rerequire('./config')
+		parameters.initialState = currentState
+		parameters.maxIterations = config.iterations
+		parameters.invokeEvery = config.checkinEvery
+		let {state:newState, score:newScore} = anneal(parameters)
+		currentState = newState
+		currentScore = newScore
+		checkin(currentState, currentScore)
 
 	} else if (/^r/i.test(response)) {
 		reset();

@@ -44,3 +44,12 @@ Object.defineProperties(Array.prototype, {
 		return Math.sqrt(this.map(n=>(n-avg)**2).average());
 	}},
 });
+
+// Require a file, reloading it from disk each time
+function rerequire(path) {
+	delete require.cache[require.resolve(path)]
+	return require(path)
+}
+
+module.exports = {rerequire:rerequire};
+

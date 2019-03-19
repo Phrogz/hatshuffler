@@ -1,4 +1,4 @@
-require('./utils')
+const {rerequire} = require('./utils');
 const csv = require('csv-parse/lib/sync')
 var fs = require('fs')
 
@@ -91,12 +91,6 @@ class Season {
 	}
 	get players() { return this.rounds[0].teams.flatMap(t=>t.players) }
 	toString() { return this.rounds.map((r,i)=>`Round #${i}\n${r+''}\n`).join('\n')}
-}
-
-// Require a file, reloading it from disk each time
-function rerequire(path) {
-	delete require.cache[require.resolve(path)]
-	return require(path)
 }
 
 // Calculate a good general ranking for a player, to try and balance teams

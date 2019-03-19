@@ -1,6 +1,6 @@
 module.exports = {
     distributedWomen:  0,
-    distributedGiants: 1,
-    evenSkills: 4,
-    playerExposure: 4,
+    distributedGiants: 3,
+    evenSkills: 3,
+    playerExposure: 5,
 }

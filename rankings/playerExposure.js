@@ -8,7 +8,7 @@ module.exports = function(season) {
         score:max + avg/10,
         stats:{
             "Players Missed, per Player": shortages,
-            "Avg Number of Players Missed": shortages.average(),
+            "Avg Number of Players Missed": shortages.average().toFixed(1),
             "Most Reclusive Player Missed": max,
         }
     }

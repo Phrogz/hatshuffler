@@ -5,7 +5,7 @@ module.exports = function(season) {
     const avg = shortages.average();
     const max = Math.max.apply(Math, shortages);
     return {
-        score:max + avg/10,
+        score:max + avg/2 + shortages.standardDeviation(),
         stats:{
             "Players Missed, per Player": shortages.join(' '),
             "Avg Number of Players Missed": shortages.average().toFixed(1),

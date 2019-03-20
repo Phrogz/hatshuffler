@@ -11,7 +11,8 @@ module.exports = function checkin(curSeason, curRank, bestSeason, bestRank, temp
     const colWidth = 80
     const teams0 = curSeason.rounds[0].teams
     let header = `${curSeason.rounds.length} rounds, ${teams0.length} teams/round   SCORE: ${curRank.score.toFixed(2)}`
-    if (temp && iterations) header += `  iterations:${iterations}   elapsed:${elapsed.toFixed(1)}s`
+    if (iterations) header += `  iterations:${iterations}  elapsed:${elapsed.toFixed(1)}s`
+    if (temp && temp.toFixed) header += `  ${temp.toFixed(2)}°`
     if (bestRank) header = elide(header, colWidth) + ` | BEST SCORE: ${bestRank.score.toFixed(2)}`
     console.log(header)
 

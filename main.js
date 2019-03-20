@@ -10,7 +10,7 @@ const checkin = require('./checkin');
 const parameters = {
 	newState: require('./variation'),
 	getScore: weightedRankings,
-	getTemp: sineWaveTemp,
+	getTemp: resettingSineCooldown,
 	cloneState: initialSeason.duplicate,
 	occasionallyInvoke: checkin,
 };
@@ -43,8 +43,13 @@ function weightedRankings(state) {
 	return result;
 }
 
-function sineWaveTemp(prevTemp, iterations) {
-	return (Math.cos(Math.PI*2*iterations/(config.resetEvery||1e3))+1)/2 * (config.maxTemp||10);
+// Use the 3rd quarter of the sine wave to cool down quickly and then bottom out at 0,
+// resetting every so often. Returning false is a signal to switch to the best state.
+function resettingSineCooldown(prevTemp, iterations) {
+	const resetEvery = config.useBestEvery || 1e3
+	const localStep = iterations%resetEvery
+   if (localStep===0) return false
+   return (Math.sin(Math.PI + Math.PI/2*localStep/resetEvery) + 1) * (config.maxTemp||10)
 }
 
 reset();
@@ -69,10 +74,13 @@ while (true) {
 		parameters.initialState = currentState
 		parameters.maxIterations = config.iterations
 		parameters.invokeEvery = config.checkinEvery
-		let {state:newState, score:newScore} = anneal(parameters)
+
+		let {state:newState, score:newScore, elapsed} = anneal(parameters)
+
 		currentState = newState
 		currentScore = newScore
 		checkin(currentState, currentScore)
+		console.log(`${config.iterations} iterations in ${elapsed.toFixed(1)}s (${Math.round(config.iterations/elapsed)} iterations per second)\n`)
 
 	} else if (/^r/i.test(response)) {
 		reset();

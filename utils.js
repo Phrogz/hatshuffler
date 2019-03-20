@@ -1,3 +1,5 @@
+const util = require('util');
+
 Object.defineProperties(Array.prototype, {
 	eachSlice : {value:function(size, ƒ) {
 		if (ƒ) {
@@ -9,7 +11,7 @@ Object.defineProperties(Array.prototype, {
 			for (var i=0, l=this.length; i<l; i+=size) {
 				result[i/size] = this.slice(i, i+size);
 			}
-			return result;        
+			return result;
 		}
 	}},
 
@@ -20,6 +22,8 @@ Object.defineProperties(Array.prototype, {
 	}},
 
 	transpose : {value:function() {
+		if (!this.length) return this.slice();
+		if (!Array.isArray(this[0])) throw new Error('Cannot transpose: '+util.inspect(this));
 		const cols=this[0].length, result=[];
 		for (let i=0, rows=this.length; i<rows; ++i) {
 			for (let j=0; j<cols; j++) {
@@ -35,7 +39,7 @@ Object.defineProperties(Array.prototype, {
 	}},
 
 	average : {value:function() {
-		const sum = this.reduce((sum,n)=>sum+n, 0);		
+		const sum = this.reduce((sum,n)=>sum+n, 0);
 		return sum / this.length;
 	}},
 
@@ -43,6 +47,20 @@ Object.defineProperties(Array.prototype, {
 		const avg = this.average();
 		return Math.sqrt(this.map(n=>(n-avg)**2).average());
 	}},
+
+	sortBy : {value:function(ƒ) {
+		if (!ƒ) return this.sort();
+		for (let i=this.length;i--;){
+			const v = this[i];
+			this[i] = [].concat(ƒ.call(v,v,i), v);
+		 }
+		 this.sort((a,b) => {
+			for (var i=0,len=a.length;i<len;++i) if (a[i]!=b[i]) return a[i]<b[i]?-1:1;
+			return 0;
+		 });
+		 for (var i=this.length;i--;) this[i]=this[i][this[i].length-1];
+		 return this;
+	 }},
 });
 
 // Require a file, reloading it from disk each time
@@ -52,4 +70,3 @@ function rerequire(path) {
 }
 
 module.exports = {rerequire:rerequire};
-

@@ -5,6 +5,7 @@ const setup = require('./setup');
 const anneal = require('./simulated-annealing');
 const initialSeason = setup();
 let config = require('./config');
+rankingWeights = config.weightings // intentionally global
 const checkin = require('./checkin');
 const parameters = {
 	newState: require('./variation'),
@@ -13,7 +14,6 @@ const parameters = {
 	cloneState: initialSeason.duplicate,
 	occasionallyInvoke: checkin,
 };
-let rankingWeights = require('./rankings/weights');
 
 function reset() {
 	parameters.initialState = setup();
@@ -64,8 +64,8 @@ while (true) {
 		console.log(currentState+'');
 
 	} else if (/^g/i.test(response)) {
-		rankingWeights = rerequire('./rankings/weights')
 		config = rerequire('./config')
+		rankingWeights = config.weightings
 		parameters.initialState = currentState
 		parameters.maxIterations = config.iterations
 		parameters.invokeEvery = config.checkinEvery

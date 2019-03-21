@@ -1,4 +1,4 @@
-// Does each team have the same average vector?
+// Does each team have the same average vector, and/or do players get a good on good teams as often as bad ones?
 module.exports = function(season) {
 	const playerTeamVector = new Map;
 	const playerTeamCount = season.rounds.length

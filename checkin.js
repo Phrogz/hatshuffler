@@ -17,7 +17,7 @@ module.exports = function checkin(curSeason, curRank, bestSeason, bestRank, temp
     console.log(header)
 
     const nameLength = Math.max.apply(Math, [...Object.keys(curRank.scores), ...Object.keys(curRank.stats)].map(n=>n.length))
-    console.log(`  ${"Men/women per Team".padEnd(nameLength)} : ${teams0.map(t => [t.men.length, t.women.length].join('/')).join(', ')}`)
+    console.log(`  ${"Men/Women per Team".padEnd(nameLength)} : ${teams0.map(t => [t.men.length, t.women.length].join('/')).join(', ')}`)
     for (const name in curRank.scores) {
         let line = `  ${name.padEnd(nameLength-5, ' ')} × ${rankingWeights[name].toString().padStart(2)} : ${curRank.scores[name].toFixed(2)}`
         if (bestRank) line = elide(line, colWidth) + ` | ${bestRank.scores[name].toFixed(2)}`

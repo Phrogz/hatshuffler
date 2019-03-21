@@ -1,6 +1,7 @@
 module.exports = {
-    teams:        4,
-    rounds:       6,
+    players: 'data/players.csv',
+    teams:   4,
+    rounds:  6,
 
     iterations:   1e5,   /* how long with the algorith go before giving you a chance to tweak these values and continue    */
     checkinEvery: 1e3,   /* how often should the score and rankings be printed (too often slows things down)               */
@@ -15,6 +16,6 @@ module.exports = {
         distributedXP:         1,
         teamsAreFair:          3,
         playerExposure:        6,
-        distributedScheduling: 2,
+        distributedScheduling: 4,
     }
 }

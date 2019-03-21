@@ -3,9 +3,9 @@ const readline = require('readline-sync');
 const rankings = loadRankings();
 const setup = require('./setup');
 const anneal = require('./simulated-annealing');
-const initialSeason = setup();
 let config = require('./config');
 rankingWeights = config.weightings // intentionally global
+const initialSeason = setup(config);
 const checkin = require('./checkin');
 const parameters = {
 	newState: require('./variation'),
@@ -16,7 +16,7 @@ const parameters = {
 };
 
 function reset() {
-	parameters.initialState = setup();
+	parameters.initialState = setup(config);
 }
 
 function loadRankings() {
@@ -26,6 +26,8 @@ function loadRankings() {
 	return rankings;
 }
 
+// Run the rankings in the rankings folder, based on their presence in config.js/weightings
+// Weight their scores based on those weightings, and aggregate all the stats they generate
 function weightedRankings(state) {
 	const result = {score:0, scores:{}, stats:{}};
 	let totalWeight=0;
@@ -52,6 +54,19 @@ function resettingSineCooldown(prevTemp, iterations) {
    return (Math.sin(Math.PI + Math.PI/2*localStep/resetEvery) + 1) * (config.maxTemp||10)
 }
 
+function showState(state) {
+	console.log(state.toString())
+}
+
+function exportState(state) {
+	const fs = require('fs')
+	const csv = state.toCSV()
+	const path = `data/state-${(new Date).toISOShort()}.csv`
+	if (!fs.existsSync('data')) fs.mkdirSync('data')
+	fs.writeFileSync(path, csv)
+	console.log(`Wrote ${path}`)
+}
+
 reset();
 
 let currentState = parameters.initialState,
@@ -59,14 +74,14 @@ let currentState = parameters.initialState,
 checkin(currentState, currentScore);
 
 while (true) {
-	const response = readline.question("(g)o (s)how (r)eset (e)dit e(x)it: ");
+	const response = readline.question("(r)eset (g)o (s)how (q)uit: ");
 
-	if (/^[xq]/i.test(response)) {
-		console.log(currentState+'');
-		process.exit();
+	if (/^q/i.test(response)) {
+		showState(currentState)
+		process.exit()
 
 	} else if (/^s/i.test(response)) {
-		console.log(currentState+'');
+		showState(currentState)
 
 	} else if (/^g/i.test(response)) {
 		config = rerequire('./config')
@@ -80,6 +95,7 @@ while (true) {
 		currentState = newState
 		currentScore = newScore
 		checkin(currentState, currentScore)
+		exportState(currentState)
 		console.log(`${config.iterations} iterations in ${elapsed.toFixed(1)}s (${Math.round(config.iterations/elapsed)} iterations per second)\n`)
 
 	} else if (/^r/i.test(response)) {

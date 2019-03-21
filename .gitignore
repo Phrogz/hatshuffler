@@ -1,5 +1,6 @@
 *.csv
 *.ods
+.DS_Store
 
 # Logs
 logs

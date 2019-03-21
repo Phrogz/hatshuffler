@@ -63,6 +63,11 @@ Object.defineProperties(Array.prototype, {
 	 }},
 });
 
+function pad(n) { return (n<10 ? '0' : '')+n }
+Object.defineProperty(Date.prototype, 'toISOShort', {value:function(){
+	return [this.getFullYear(), pad(this.getMonth()+1), pad(this.getDate()), 'T', pad(this.getHours()), pad(this.getMinutes()), pad(this.getSeconds())].join('')
+}})
+
 // Require a file, reloading it from disk each time
 function rerequire(path) {
 	delete require.cache[require.resolve(path)]

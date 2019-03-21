@@ -29,7 +29,7 @@ function loadRankings() {
 function weightedRankings(state) {
 	const result = {score:0, scores:{}, stats:{}};
 	let totalWeight=0;
-	for (const name in rankings) {
+	for (const name in rankingWeights) {
 		const weight = rankingWeights[name];
 		if (weight) {
 			const {score, stats} = rankings[name](state);

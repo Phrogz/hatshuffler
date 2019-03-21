@@ -1,6 +1,6 @@
 {
   "name": "hatmaster",
-  "version": "0.1.0",
+  "version": "0.5.0",
   "description": "Making fair hat leagues through black magic.",
   "main": "main.js",
   "scripts": {
@@ -10,7 +10,6 @@
   "license": "MIT",
   "dependencies": {
     "csv-parse": "^4.3.4",
-    "readline-sync": "^1.4.9",
-    "simulated-annealing": "^1.0.2"
+    "readline-sync": "^1.4.9"
   }
 }

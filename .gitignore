@@ -2,6 +2,7 @@
 *.ods
 .DS_Store
 !data/demo.csv
+.vscode
 
 # Logs
 logs

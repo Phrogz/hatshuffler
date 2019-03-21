@@ -246,7 +246,8 @@ _TODO: describe the data structures in `gru.js`, the importance of ranking simil
 
 * Provide a config option to import a season from CSV (using the same schema as it exports)
   so you can save, share and pick up where you left off later.
-* Clean up files/folders so that the main shell is 100% generic and divested from GRU/seasons. Document what each file is for.
+* Clean up files/folders so that the main shell is 100% generic and separated from GRU/seasons.
+* Clean up files/folders and document what each file is for.
 * Either promote customized annealing library to main, or fork into its own npm. (Git submodules are annoying.)
 * Provide a web-based front-end in lieu of the ghetto console-based interface.
 

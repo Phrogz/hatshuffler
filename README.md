@@ -39,7 +39,7 @@ be playing. See `data/README.md` for details on the CSV format used to import pl
 
 First, specify the number of teams and rounds of play you want in `config.js`:
 
-```json
+```js
 players: 'data/players.csv',  /* see data/README.md for details                       */
 teams:   4,                   /* how many teams are the players split into each round */
 rounds:  6,                   /* how many rounds of play are there                    */
@@ -166,7 +166,7 @@ Not all rankings have the same scale, and not all are as important as others. If
 is getting bad scores, and you want to increase its relative importance in determining the overall score,
 edit `config.js`:
 
-```json
+```js
 /* how important is each ranking relative to the others */
 weightings: {
     distributedWomen:      0,
@@ -212,7 +212,7 @@ turns the temperature back up and starts again.
 
 All the background knowledge above lets you tune these settings in `config.js`:
 
-```json
+```js
 iterations:   1e5, /* how does the algorithm run before giving you a chance to tweak these values and continue */
 checkinEvery: 1e3, /* how often should the score and rankings be printed; too often slows things down          */
 maxTemp:      4,   /* higher temps allow the algorithm to wander into terrible scores…to escape local minima   */

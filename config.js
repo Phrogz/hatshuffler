@@ -1,5 +1,5 @@
 module.exports = {
-    players: 'data/players.csv',  /* see data/README.md for details                       */
+    players: 'data/demo.csv',     /* see data/README.md for file details                  */
     teams:   4,                   /* how many teams are the players split into each round */
     rounds:  6,                   /* how many rounds of play are there                    */
 

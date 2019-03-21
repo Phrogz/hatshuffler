@@ -110,7 +110,7 @@ and again ask you what you want to do.
 If you feel that the season is not yet good enough, you can type `g <enter>` again and the algorithm will continue
 to operate on the season.
 
-If you want to see the team it made, you can type `s <enter>` and it will `(s)how` the season:
+If you want to see the teams and rounds it came up with, type `s <enter>` and it will `(s)how` the season:
 
 ```text
 Round #1
@@ -150,9 +150,9 @@ Aluino Okker, Markle Phette(T), Kaile Ziemecki, Shane Dorsey, Taddeo Tubb, Ryley
 Bert Thiem, Northrop Von Hindenburg, Shirlton Durdle, Rowan Westwater, Inness Wickenden(T), Livy Alebrooke, Loralie Filyushkin, Belvia Duffan, Trude Skeel, Kalli McGoon, Chelsie D'Alessio
 ```
 
-If you feel that maybe HatShuffler is optimizing for the wrong things, you can (while the program is running)
-edit the ranking weights in `config.js` and then `(g)o` again, as described in the next section.
-HatShuffler will recalculate the score of the best season and continue to optimize it.
+If you feel that maybe HatShuffler is optimizing for the wrong things, you can edit the ranking weights
+in `config.js` (without quitting the application) and then `(g)o` again, as described in the next section.
+HatShuffler will recalculate the score of the best season and then optimize it, using your new settings.
 
 
 ## Modifying Rankings & Ranking Weights

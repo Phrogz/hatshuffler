@@ -151,7 +151,7 @@ Bert Thiem, Northrop Von Hindenburg, Shirlton Durdle, Rowan Westwater, Inness Wi
 ```
 
 If you feel that maybe HatShuffler is optimizing for the wrong things, you can (while the program is running)
-edit the ranking weights `in config.js` and then `(g)o` again, as described in the next section.
+edit the ranking weights in `config.js` and then `(g)o` again, as described in the next section.
 HatShuffler will recalculate the score of the best season and continue to optimize it.
 
 
@@ -235,7 +235,7 @@ The values for the first two parameters are mostly up to your preference:
 The other two parameters can heavily affect how quickly you get a really good season generated:
 
 * If `maxTemp` is too high, the algorithm will keep choosing terrible seasons and spend too little time on good ones.
-* If `maxTemp` is too low, the algorithm will get stuck in local minima. Raise the temperature if you get stuck and see if it can walk out.
+* If `maxTemp` is too low, the algorithm will get stuck in local minima. Try raising the temp if you are stuck on a certain score.
 * If `useBestEvery` is too high, the algorithm will spend more time on what may be dead end attempts.
 * If `useBestEvery` is too low, the algorithm may not have time to explore paths before the temperature cools off and it starts over.
 
@@ -260,6 +260,6 @@ _TODO: describe the data structures in `gru.js`, the importance of ranking simil
 
 # License & Contact
 
-HatShuffler is copyright ©2019 by ***REMOVED*** and is licensed under the [MIT License](http://opensource.org/licenses/MIT). See the LICENSE file for more details.
+HatShuffler is copyright ©2019 by Gavin Kistner and is licensed under the [MIT License](http://opensource.org/licenses/MIT). See the LICENSE file for more details.
 
 For bugs or feature requests please open [issues on GitHub](https://github.com/Phrogz/hatshuffler/issues). For other communication you can [email the author](mailto:!@phrogz.net?subject=hatshuffler) directly.

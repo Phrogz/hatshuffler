@@ -240,6 +240,11 @@ The other two parameters can heavily affect how quickly you get a really good se
 * If `useBestEvery` is too low, the algorithm may not have time to explore paths before the temperature cools off and it starts over.
 
 
+# Saving and Restoring Seasons
+
+_TODO: describe using the `season` setting in `config.js` along with `players` to load the initial season from a saved run._
+
+
 # Adding New Rankings
 
 _TODO: describe the data structures in `gru.js`, the importance of ranking similarity, using stddev instead of absolute values, ..._

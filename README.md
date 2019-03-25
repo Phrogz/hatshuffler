@@ -355,8 +355,6 @@ return {
 
 # TODO
 
-* Provide a config option to import a season from CSV (using the same schema as it exports)
-  so you can save, share and pick up where you left off later.
 * Clean up files/folders so that the main shell is 100% generic and separated from GRU/seasons.
 * Clean up files/folders and document what each file is for.
 * Either promote customized annealing library to main, or fork into its own npm. (Git submodules are annoying.)

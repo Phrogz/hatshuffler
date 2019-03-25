@@ -268,7 +268,7 @@ The file is designed to be copy/pasted into Excel or Google Sheets.
 However, it can also be used to test out different modifications.
 
 For example, say that Elmet and Dorey have paid you a bribe to put them on the same team. You want to see how much
-doing this would wrecks the perfect schedule that HatShuffler created for you. First, you save the CSV file as
+doing this would wreck the perfect schedule that HatShuffler created for you. First, you save the CSV file as
 `cheaters.csv` and then hand-edit it to swap team assignments. Note that if you just copy Elmet's teams and paste
 them on Dorey's row you will be changing the team sizes each round, so you probably want to swap Dorey with other
 players.
@@ -283,8 +283,7 @@ Once you have the proposed schedule ready, edit `config.js` and set the `"season
 Quit HatShuffler (if it was running), and then start it again (`node main.js`). HatShuffler will show you the new
 score for the season you created. If you like, you can `(g)o` to start shuffling things around to try and make
 the season better. In the case where you modify the season to impose special rules—such as keeping two players
-together—optimizing the season will likely undo your work. However, if you modified the season to make it better
-within the optimization criteria, your intuition can be useful.
+together—optimizing the season will likely undo your work. To change the rules you need to add new rankings:
 
 
 # Adding New Rankings

@@ -242,12 +242,105 @@ The other two parameters can heavily affect how quickly you get a really good se
 
 # Saving and Restoring Seasons
 
-_TODO: describe using the `season` setting in `config.js` along with `players` to load the initial season from a saved run._
+Every time an optimization run completes a file is saved in the `data` folder, named with the current date and time, e.g. `state-20190322T150550.csv`.
+
+This file is tab-delimited with a simple data format: one row for each player with the player's name, sex (`M` or `F`), a blank column, and then the color of the team that person is on in each round. For example, the data might look like:
+
+```text
+Markle Phette     M   Red     Blue    Green   White   Red     Blue
+Adlai Patrone     M   Red     Green   Red     White   Blue    Red
+Elmet Cotta       M   Red     Blue    White   Green   White   Green
+Taddeo Tubb       M   Red     Blue    Green   Red     Red     White
+Flora Jambrozek   F   Red     White   Green   Green   Red     Red
+Kalli McGoon      F   Red     Green   Red     Green   White   Green
+Reilla Greason    F   Red     Red     Blue    Blue    White   White
+Dorey Bryde       F   Red     White   White   Blue    Green   White
+Bartlett Gurery   M   Green   Blue    White   White   Red     Green
+Ravid Yerrell     M   Green   Red     Red     Blue    White   Green
+...
+```
+
+_The above has been aligned using spaces to make it easier to read._
+
+This says that, for example, "Adlai" is male, plays on the Red team in round 1, the Green team in round 2, etc.
+
+The file is designed to be copy/pasted into Excel or Google Sheets.
+However, it can also be used to test out different modifications.
+
+For example, say that Elmet and Dorey have paid you a bribe to put them on the same team. You want to see how much
+doing this would wrecks the perfect schedule that HatShuffler created for you. First, you save the CSV file as
+`cheaters.csv` and then hand-edit it to swap team assignments. Note that if you just copy Elmet's teams and paste
+them on Dorey's row you will be changing the team sizes each round, so you probably want to swap Dorey with other
+players.
+
+Once you have the proposed schedule ready, edit `config.js` and set the `"season"` key to reference your new file:
+
+```js
+    players: 'data/demo.csv',     // see data/README.md for file details
+    season:  'data/cheaters.csv', // load this file as the initial season
+```
+
+Quit HatShuffler (if it was running), and then start it again (`node main.js`). HatShuffler will show you the new
+score for the season you created. If you like, you can `(g)o` to start shuffling things around to try and make
+the season better. In the case where you modify the season to impose special rules—such as keeping two players
+together—optimizing the season will likely undo your work. However, if you modified the season to make it better
+within the optimization criteria, your intuition can be useful.
 
 
 # Adding New Rankings
 
-_TODO: describe the data structures in `gru.js`, the importance of ranking similarity, using stddev instead of absolute values, ..._
+If you want the optimization to take new criteria into account, you can add your own "ranking" plugins. This requires:
+
+1. Adding a new file to the `rankings` directory, and
+2. Adding the name of that file to the `weightings` section of `config.js` with a non-zero weighting value.
+
+For example, let's add a ranking that tries to keep Elmet and Dorey on the same team. First, create a new file named
+`rankings/elmetAndDorey.js`, and put code in it like so:
+
+```js
+// Try to keep players named "Elmet" and "Dorey" on the same team
+module.exports = function(season) {
+    // This will be a multiple of 2, since each time Elmet and Dorey are on different
+    // teams we will get a hit for each one of them.
+    let timesOnDifferentTeams = 0
+    season.teams.forEach(team=>{
+        const matching = team.players.filter(player => /^(Elmet|Dorey)/.test(player.name))
+        if (matching.length===1) timesOnDifferentTeams++
+    })
+    return {
+        score: timesOnDifferentTeams * 3 // Inflate the score so that a couple misses is really bad
+    }
+}
+```
+
+Every ranking plugin must export a function that takes the current season and returns an object with a `score` value.
+The score must be calculated such that lower values represent better seasons, with 0 being perfection for this ranking.
+
+To see the properties and methods available to you, see the `lib/gru.js` file.
+
+The range of values is up to you, but ideally all rankings have a similar scale. If one ranking uses values in the
+range [0-10] to represent the continuum between a perfect season and a useless one, but another ranking uses values
+in the range of [0-100], then the latter ranking will have more 'weight' than the former, and will be optimized for
+at the expense of the former. You will have to supply very different weightings for the rankings to balance them out.
+
+The rankings in HatMaster are currently written to (very roughly) treat values of 10+ as "pretty bad".
+
+Your ranking plugin can also, optionally, return a `stats` key in its results. This allows you, HatMaster General, to
+summarize what the season you're measuring looks like from the perspective of your ranking plugin.
+This should be an object mapping labels to the data to show. For example, the `playerExposure` ranking returns this:
+
+```js
+return {
+    score:max + avg/2 + shortages.standardDeviation(),
+    stats:{
+        "Players Missed, per Player": shortages.join(' '),
+        "Avg Number of Players Missed": shortages.average().toFixed(1),
+        "Most Reclusive Player Missed": max,
+    }
+}
+```
+
+
 # TODO
 
 * Provide a config option to import a season from CSV (using the same schema as it exports)
@@ -260,6 +353,7 @@ _TODO: describe the data structures in `gru.js`, the importance of ranking simil
 
 # History
 
+* 2019-03-25 — v0.6.0 save/restore seasons
 * 2019-03-21 — v0.5.0 just barely working
 
 

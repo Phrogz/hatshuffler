@@ -12,6 +12,19 @@ would otherwise be a nightmare problem in combinatorics. It doesn't find the abs
 but it finds ones that are quite good, relatively quickly. This takes a little bit of art and finesse from you
 to help tune the algorithm as it runs. More on that below.
 
+# Table of Contents
+
+* [Installing](#installing)
+* [Running](#running)
+   * [Modifying Rankings & Ranking Weights](#modifying-rankings--ranking-weights)
+   * [Modifying Run Parameters](#modifying-run-parameters)
+   * [Picking the Right Values](#picking-the-right-values)
+* [Saving and Restoring Seasons](#saving-and-restoring-seasons)
+* [Adding New Rankings](#adding-new-rankings)
+* [TODO](#todo)
+* [History](#history)
+* [License & Contact](#license--contact)
+
 
 # Installing
 

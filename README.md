@@ -1,4 +1,8 @@
 # Overview
+**Note**: The functionality of HatShuffler has been moved to be part of the [Rephinez](https://github.com/Phrogz/rephinez)
+library, as one of the [sample scenarios](https://github.com/Phrogz/rephinez/blob/master/scenarios/Hat%20Shuffler/ABOUT.md).
+This project is no longer maintained.
+
 HatShuffler is a way of organizing sports teams where players play on a different team each week.
 Its goal is to optimize the teams for fairness on multiple axes, like:
 

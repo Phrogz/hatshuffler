@@ -13,7 +13,7 @@
   "author": "Phrogz",
   "license": "MIT",
   "dependencies": {
-    "csv-parse": "^4.3.4",
+    "csv-parse": "^4.4.6",
     "readline-sync": "^1.4.9"
   }
 }
